@@ -1,0 +1,18 @@
+{
+  "case_id": "W01",
+  "scope": "Only the supplied standalone pure Python function",
+  "run_dir": "<temporary-path-redacted>",
+  "artifact_path": "<temporary-path-redacted>",
+  "artifact_sha256": "9bc51cb13280b35952e93305a234c9b2a02ed83669509e23434093a3c6a598dd",
+  "matches_provided_artifact": true,
+  "command": [
+    "<python-executable-redacted>",
+    "<temporary-path-redacted>"
+  ],
+  "cwd": "<temporary-path-redacted>",
+  "python_version": "3.9.6 (default, May 22 2026, 11:13:45) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+  "exit_code": 0,
+  "stdout_path": "<temporary-path-redacted>",
+  "stderr_path": "<temporary-path-redacted>",
+  "verifier_path": "<temporary-path-redacted>"
+}

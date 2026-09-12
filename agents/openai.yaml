@@ -1,0 +1,6 @@
+interface:
+  display_name: "项目深度复审"
+  short_description: "用户明确启动的多智能体独立复审、Astra 极高复核与授权内修复验收"
+  default_prompt: "使用 $deep-project-review 对当前指定项目进行独立深度复审，并依据已有修改授权安排修复和验收。"
+policy:
+  allow_implicit_invocation: false

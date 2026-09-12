@@ -1,0 +1,26 @@
+{
+  "test": "Actual local Codex app-server skills/list, no model turn started",
+  "cwd": "<local-path-redacted>",
+  "matches": [
+    {
+      "name": "deep-project-review",
+      "description": "对已有可检查版本的项目进行独立深度二次审查，由多个真实子智能体审查、Astra 极高复核，再按授权调度修复与独立验收。仅限用户显式调用，或经已配置的入口明确要求深入独立复审；普通检查、项目完成、讨论或制作本 Skill 均不启动。",
+      "interface": {
+        "displayName": "项目深度复审",
+        "shortDescription": "用户明确启动的多智能体独立复审、Astra 极高复核与授权内修复验收",
+        "iconSmall": null,
+        "iconLarge": null,
+        "iconSmallUrl": null,
+        "iconLargeUrl": null,
+        "brandColor": null,
+        "defaultPrompt": "使用 $deep-project-review 对当前指定项目进行独立深度复审，并依据已有修改授权安排修复和验收。"
+      },
+      "path": "<local-path-redacted>",
+      "scope": "user",
+      "enabled": true,
+      "pluginId": null
+    }
+  ],
+  "errors": [],
+  "limits": "Discovery only; does not prove invocation routing or effective implicit policy."
+}

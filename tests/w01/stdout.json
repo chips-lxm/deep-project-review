@@ -1,0 +1,114 @@
+{
+  "checks": [
+    {
+      "name": "zero",
+      "input_repr": "0",
+      "expected_kind": "return",
+      "expected_value": 0,
+      "actual_kind": "return",
+      "actual_value": 0,
+      "passed": true
+    },
+    {
+      "name": "one",
+      "input_repr": "1",
+      "expected_kind": "return",
+      "expected_value": 10,
+      "actual_kind": "return",
+      "actual_value": 10,
+      "passed": true
+    },
+    {
+      "name": "positive",
+      "input_repr": "7",
+      "expected_kind": "return",
+      "expected_value": 70,
+      "actual_kind": "return",
+      "actual_value": 70,
+      "passed": true
+    },
+    {
+      "name": "large_integer",
+      "input_repr": "1000000000000000000000000000000",
+      "expected_kind": "return",
+      "expected_value": 10000000000000000000000000000000,
+      "actual_kind": "return",
+      "actual_value": 10000000000000000000000000000000,
+      "passed": true
+    },
+    {
+      "name": "negative",
+      "input_repr": "-1",
+      "expected_kind": "ValueError",
+      "expected_value": null,
+      "actual_kind": "ValueError",
+      "actual_value": "quantity",
+      "passed": true
+    },
+    {
+      "name": "true",
+      "input_repr": "True",
+      "expected_kind": "ValueError",
+      "expected_value": null,
+      "actual_kind": "ValueError",
+      "actual_value": "quantity",
+      "passed": true
+    },
+    {
+      "name": "false",
+      "input_repr": "False",
+      "expected_kind": "ValueError",
+      "expected_value": null,
+      "actual_kind": "ValueError",
+      "actual_value": "quantity",
+      "passed": true
+    },
+    {
+      "name": "integral_float",
+      "input_repr": "1.0",
+      "expected_kind": "ValueError",
+      "expected_value": null,
+      "actual_kind": "ValueError",
+      "actual_value": "quantity",
+      "passed": true
+    },
+    {
+      "name": "zero_float",
+      "input_repr": "0.0",
+      "expected_kind": "ValueError",
+      "expected_value": null,
+      "actual_kind": "ValueError",
+      "actual_value": "quantity",
+      "passed": true
+    },
+    {
+      "name": "string",
+      "input_repr": "'1'",
+      "expected_kind": "ValueError",
+      "expected_value": null,
+      "actual_kind": "ValueError",
+      "actual_value": "quantity",
+      "passed": true
+    },
+    {
+      "name": "none",
+      "input_repr": "None",
+      "expected_kind": "ValueError",
+      "expected_value": null,
+      "actual_kind": "ValueError",
+      "actual_value": "quantity",
+      "passed": true
+    },
+    {
+      "name": "list",
+      "input_repr": "[]",
+      "expected_kind": "ValueError",
+      "expected_value": null,
+      "actual_kind": "ValueError",
+      "actual_value": "quantity",
+      "passed": true
+    }
+  ],
+  "passed": 12,
+  "total": 12
+}

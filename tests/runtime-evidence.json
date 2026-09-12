@@ -1,0 +1,49 @@
+{
+  "verification_source": "Read-only targeted host SQLite thread records and corresponding rollout turn_context; no child self-identification used.",
+  "records": [
+    {
+      "id": "<session-id-redacted>",
+      "agent_path": "/root/skill_trigger_test",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "high",
+      "source": "{\"subagent\":{\"thread_spawn\":{\"parent_thread_id\":\"<session-id-redacted>\",\"depth\":1,\"agent_path\":\"/root/skill_trigger_test\",\"agent_nickname\":\"Kuhn\",\"agent_role\":null}}}",
+      "rollout_path": "<local-path-redacted>",
+      "turn_contexts": [
+        {
+          "model": "gpt-5.6-terra",
+          "effort": "high",
+          "reasoning_effort": null,
+          "turn_id": "<session-id-redacted>"
+        }
+      ],
+      "requested": {
+        "fork_turns": "none",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "high",
+        "tool": "collaboration.spawn_agent"
+      }
+    },
+    {
+      "id": "<session-id-redacted>",
+      "agent_path": "/root/skill_workflow_test",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "source": "{\"subagent\":{\"thread_spawn\":{\"parent_thread_id\":\"<session-id-redacted>\",\"depth\":1,\"agent_path\":\"/root/skill_workflow_test\",\"agent_nickname\":\"Pasteur\",\"agent_role\":null}}}",
+      "rollout_path": "<local-path-redacted>",
+      "turn_contexts": [
+        {
+          "model": "gpt-6-astra",
+          "effort": "xhigh",
+          "reasoning_effort": null,
+          "turn_id": "<session-id-redacted>"
+        }
+      ],
+      "requested": {
+        "fork_turns": "none",
+        "model": "gpt-6-astra",
+        "reasoning_effort": "xhigh",
+        "tool": "collaboration.spawn_agent"
+      }
+    }
+  ]
+}
