@@ -1,18 +1,19 @@
 # 宿主与模型适配
 
-## 经核实的映射（2026-09-12，Codex desktop / CLI 0.154.0）
+## 当前路由映射（2026-09-23，按每轮宿主能力核实）
 
 | 用户称呼 | 实际 model ID | 本 Skill 使用的推理值 |
 | --- | --- | --- |
-| 5.6 Luna | gpt-5.6-luna | medium / high |
-| 5.6 Terra | gpt-5.6-terra | medium / high / xhigh |
-| 5.6 Sol | gpt-5.6-sol | medium / high / xhigh |
+| GPT-6 Luna | gpt-6-luna | 固定 high |
+| GPT-6 Sol（实现、集成与审查） | gpt-6-sol | medium / high / xhigh |
 | Astra | gpt-6-astra | high / xhigh |
 | Astra·极高（固定复核） | gpt-6-astra | xhigh |
 
-中 = `medium`，高 = `high`，极高 = `xhigh`（本机模型目录描述为 “Extra high reasoning depth for complex problems”）。`max` 与 `ultra` 是另外的档位，不是“极高”的替代值。不要使用 `Astra`、`Sol` 等昵称作为 model ID，也不要依赖可能变化的 `gpt-5.6` 别名。
+中 = `medium`，高 = `high`，极高 = `xhigh`。`max` 与 `ultra` 是另外的档位，不是“极高”的替代值。使用表中的完整 model ID，不用昵称或未经核实的别名。主会话模型保持用户当前选择；以上映射用于子任务，不要求主会话切换模型。
 
-本机 `~/.codex/models_cache.json` 的 2026-09-12 快照及本次工具 schema 均列出四个 ID 的 `medium/high/xhigh` 支持；缓存只能证明目录声明，不能证明本次执行成功。官方模型页也列出这些档位，但 API 可用性不代表 Codex 当前账号一定能调用。
+当前 desktop 工具声明列出这三个 ID 及本表使用的档位；官方 API 模型页也支持这些档位，但不证明本轮账号调用成功。模型缓存可能滞后：当前工具明确支持新模型时，缓存缺项不能单独判定不可用；同样，目录存在该模型不代表配置已经生效。结合当前工具契约、实际调用及可信运行证据判断，按下文分别记录 requested/effective。历史测试及缓存快照保留原始日期，不改写成新模型验证。
+
+本轮新模型不可用时保留已完成证据并报告受影响阶段，不静默回退旧模型、降低强度或把其他配置写成指定配置。Astra xhigh 是必需阶段，不得由 Sol 替代。不要因缓存缺项先行阻止工具声明支持的合法调用，也不要因实际失败而无限重试。
 
 ## 当前 desktop 原生调用
 
@@ -22,7 +23,7 @@
 {
   "task_name": "review_core",
   "fork_turns": "none",
-  "model": "gpt-5.6-sol",
+  "model": "gpt-6-sol",
   "reasoning_effort": "high",
   "message": "本轮已获用户授权。只审查指定基准的核心逻辑；读取提供的原始要求与实际文件；禁止修改正式项目或读取其他审查者报告；按报告模板返回证据。这里应补齐本轮绝对路径、范围、基准和验收标准。"
 }
@@ -48,7 +49,7 @@ Astra 结论复核独立调用如下；调用前填齐实际材料，不要原�
 
 ## 每轮配置生效证据
 
-1. 检查当前工具声明及可用模型目录；保存来源、时间、支持档位和实际参数名。
+1. 检查当前工具声明及可取得的模型目录；保存来源、时间、支持档位和实际参数名。目录缓存与工具声明不一致时保留差异，不能仅凭缓存否决当前工具明确支持的配置。
 2. 保存结构化调用参数、工具返回的 agent ID/任务 ID、成功/失败结果。
 3. 读取宿主返回的运行模型与档位，或该子任务可定位的运行事件/会话元数据。记录 `requested` 与 `effective` 分开列出。仅保存必要字段，不读取或传播凭据和其他任务内容。
 4. 某些宿主的列表只显示名称和状态、不显示配置。可检查对应子任务的 `turn_context` 等可信运行记录；不能把子智能体自己的“我是 Astra”当作证据。工具若明确保证接受即采用指定配置，可记录该契约及成功返回，但仍应注明无独立 effective 回显。
@@ -65,5 +66,5 @@ Astra 结论复核独立调用如下；调用前填齐实际材料，不要原�
 ## 来源
 
 - [官方子智能体说明](https://learn.chatgpt.com/docs/agent-configuration/subagents)：配置字段、继承与自定义 agent。以实际宿主 schema 为调用依据。
-- [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra)、[GPT-5.6 Terra](https://developers.openai.com/api/docs/models/gpt-5.6-terra)、[GPT-5.6 Sol](https://developers.openai.com/api/docs/models/gpt-5.6-sol)、[GPT-5.6 Luna](https://developers.openai.com/api/docs/models/gpt-5.6-luna)：模型 ID 和 API 推理支持；不证明账号调用成功。
+- [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra)、[GPT-6 Sol](https://developers.openai.com/api/docs/models/gpt-6-sol)、[GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna)：模型 ID 和 API 推理支持；不证明账号调用成功。Luna 固定 high 是本 Skill 的路由要求，不是 API 支持范围的描述。
 - 本机 skill-creator 的 `references/openai_yaml.md` 与当前宿主工具声明：`allow_implicit_invocation: false` 保留显式入口。官方 skills 页面本次重定向到 [Build skills](https://learn.chatgpt.com/docs/build-skills)，抓取正文未找到该 policy 字段，因此不冒称已从该网页核实字段。

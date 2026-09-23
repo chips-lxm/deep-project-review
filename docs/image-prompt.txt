@@ -1,3 +1,5 @@
+ARCHIVED v0.1.0 ART PROMPT. The model labels below describe the original release image and are not current routing or instructions for new artwork. See README.md for current roles. The original raster asset is retained as release history.
+
 Use case: ads-marketing / stylized-concept.
 Create a polished wide 16:9 GitHub README hero illustration for the open-source Codex skill "deep-project-review", titled "DEEP PROJECT REVIEW".
 Primary user concept: multiple computers holding a meeting, arranged in a circle; a central computer is 6 Astra, surrounded by exactly three computers named 5.6 Sol, 5.6 Terra, and 5.6 Luna.

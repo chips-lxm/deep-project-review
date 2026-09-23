@@ -4,11 +4,17 @@
 
 [Download the installation ZIP](https://github.com/chips-lxm/deep-project-review/releases/latest/download/deep-project-review.zip) · [Release notes](https://github.com/chips-lxm/deep-project-review/releases/latest)
 
-![Four computers in a review meeting: 6 Astra at the center, surrounded by 5.6 Sol, Terra, and Luna](assets/social-preview.png)
+```mermaid
+flowchart LR
+  L["Current session: user-selected lead"] --> R["2–4 independent reviewers"]
+  R --> A["gpt-6-astra · xhigh: separate adjudication"]
+  A --> F["Authorized repairs: Sol by difficulty; Luna high"]
+  F --> V["Independent verifier"]
+```
 
 **Give finished work an independent review backed by evidence.**
 
-Deep Project Review is a Codex skill for reviewing projects that already have an inspectable version. Multiple real subagents examine the work independently; **Astra · xhigh** validates their findings; the current session coordinates authorized repairs and independent verification.
+Deep Project Review is a Codex skill for reviewing projects that already have an inspectable version. The user invokes it explicitly. Usually 2–4 real subagents examine the work independently; a **separate gpt-6-astra · xhigh** adjudicator validates their findings; the current session coordinates authorized repairs and independent verification while remaining on the user's selected model.
 
 It applies to code, documents, spreadsheets, designs, and presentations. Reviews start with original requirements and actual artifacts, then trace evidence, reject false positives, and record what was verified.
 
@@ -45,12 +51,11 @@ The default limit is two repair–verification rounds. Unresolved issues, blocke
 
 | Model | Preferred work | Reasoning |
 | --- | --- | --- |
-| 5.6 Luna | Clear, bounded, low-risk tasks with straightforward checks | `medium` / `high`; never below `medium` |
-| 5.6 Terra | Ordinary modules, scoped implementation, and test additions | `medium` / `high`; `xhigh` when justified |
-| 5.6 Sol | Cross-module relationships, complex logic, shared interfaces, and root causes | `medium` / `high` / `xhigh` |
-| 6 Astra | Systemic defects, high uncertainty, and major conflicts | `high` / `xhigh`; finding adjudication always `xhigh` |
+| gpt-6-luna | Clear, bounded, low-risk tasks with straightforward checks | Always `high` |
+| gpt-6-sol | Ordinary modules, scoped implementation, test additions, cross-module relationships, shared interfaces, and root causes | `medium` / `high`; `xhigh` when needed |
+| gpt-6-astra | Systemic defects, high uncertainty, and major conflicts | `high` / `xhigh`; separate finding adjudication always `xhigh` |
 
-These are routing defaults, not a requirement to use all four models on every run. The cover illustrates technical review collaboration. **The current session remains the coordinator; Astra provides technical judgment.**
+These are routing defaults, not a requirement to use all three models on every run. Consolidating model routes never combines independent reviewer, adjudicator, fixer, or verifier responsibilities. **The current session remains the coordinator; a separate Astra adjudicator provides technical judgment.**
 
 See [runtime adaptation](references/runtime.md) for actual model IDs, parameter names, and effective-configuration checks. Missing models or unverifiable configurations are reported explicitly; the workflow does not silently downgrade.
 
@@ -92,14 +97,14 @@ Preserve uncommitted user changes. Do not expand into new features, unrelated re
 
 ## Validation status
 
-Authoring validation includes:
+Historical v0.1.0 authoring validation included:
 
 - **18 invocation-semantics cases** and **12 workflow-decision cases**.
 - **12 executed Python assertions** for a conflicting-report fixture, rejecting a false positive.
-- Host-record verification of real **Terra · high** and **Astra · xhigh** evaluation subagents.
+- Host-record verification of real **5.6 Terra · high** and **6 Astra · xhigh** evaluation subagents under the earlier model map.
 - Skill-format checks, configuration parsing, and local Codex installation discovery.
 
-**Host invocation and the complete review–repair–verification workflow have not been tested end to end.** The natural-language entry is not deployed; most failure scenarios are synthetic decision tests. See the [validation report](tests/VALIDATION.md) for scope and limits. Public evidence copies redact local paths and session identifiers.
+Those results describe the earlier release; see its [historical validation report](tests/VALIDATION.md). The [2026-09-23 migration validation report](tests/migration-2026-09-23/VALIDATION.md) records current mapping checks and their limits. The new evidence includes one isolated review–adjudication–repair–independent-verification run with 81/81 acceptance checks, plus a corrected first-pass evidence-attribution error and its targeted retest. Fresh-session host loading was not tested; no universal quality, latency, or token savings are claimed.
 
 ## What is included
 
