@@ -1,0 +1,85 @@
+{
+  "date": "2026-09-30",
+  "repository": "chips-lxm/deep-project-review",
+  "release_url": "https://github.com/chips-lxm/deep-project-review/releases/tag/v0.3.0",
+  "tag": "v0.3.0",
+  "release_commit": "031205c1977d087ef0de9259d4df087553386e3a",
+  "implementation_commit": "ffea3b81bc4db563b9b4b8de02d9a6344378bbc4",
+  "published_at": "2026-09-30T08:30:12Z",
+  "is_draft": false,
+  "is_prerelease": false,
+  "latest_release_verified": "v0.3.0",
+  "remote_main_and_annotated_tag_verified_at_publication": "031205c1977d087ef0de9259d4df087553386e3a",
+  "release_notes_match_local_source": true,
+  "notes_location": "docs/launch-copy.md",
+  "assets": [
+    {
+      "name": "deep-project-review.zip",
+      "size": 2027979,
+      "digest": "sha256:29ef0adf53a53d5d88e281a1d20c3abf98c793ce8493b2d1e366a233202c40f1",
+      "state": "uploaded",
+      "url": "https://github.com/chips-lxm/deep-project-review/releases/download/v0.3.0/deep-project-review.zip"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "size": 90,
+      "digest": "sha256:cef982bea746a5a35aef43825167d73d5c67f750d98424ffe464175fa1c4b90b",
+      "state": "uploaded",
+      "url": "https://github.com/chips-lxm/deep-project-review/releases/download/v0.3.0/SHA256SUMS.txt"
+    }
+  ],
+  "package_checks": {
+    "repository": "chips-lxm/deep-project-review",
+    "tag": "v0.3.0",
+    "commit": "031205c1977d087ef0de9259d4df087553386e3a",
+    "archive": "deep-project-review.zip",
+    "archive_sha256": "29ef0adf53a53d5d88e281a1d20c3abf98c793ce8493b2d1e366a233202c40f1",
+    "archive_size": 2027979,
+    "checksum_file": "SHA256SUMS.txt",
+    "checksum_file_sha256": "cef982bea746a5a35aef43825167d73d5c67f750d98424ffe464175fa1c4b90b",
+    "archive_entries": 143,
+    "zip_integrity_passed": true,
+    "runtime_manifest_matches_source": true,
+    "release_notes_match_source": true,
+    "archive_snapshot_checks": [
+      {
+        "command": [
+          "/Users/lxm/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/skill-release-check-stt57u74/deep-project-review/scripts/freeze_run.py",
+          "--output",
+          "/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/skill-release-check-stt57u74/snapshot"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"skill_file\": \"/private/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/skill-release-check-stt57u74/snapshot/SKILL.md\", \"digest\": \"a4768b6532161201f29ab6b8dbec5a0932acb9f690382f40eb4c461b117ee6b8\", \"files\": 11, \"verified\": true}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/Users/lxm/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/skill-release-check-stt57u74/snapshot/scripts/freeze_run.py",
+          "--verify",
+          "/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/skill-release-check-stt57u74/snapshot"
+        ],
+        "exit_code": 0,
+        "stdout": "{\"skill_file\": \"/private/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/skill-release-check-stt57u74/snapshot/SKILL.md\", \"digest\": \"a4768b6532161201f29ab6b8dbec5a0932acb9f690382f40eb4c461b117ee6b8\", \"files\": 11, \"verified\": true}\n",
+        "stderr": ""
+      }
+    ],
+    "limits": "Packaging checks; prior instruction and behavioral validation remains in tests/update-2026-09-30/VALIDATION.md. No runtime rules changed for publication."
+  },
+  "runtime_manifest_sha256": "c542860ccd30d3e2e916480e2ea2dab7894501aa741a82935b2a5568fd0ede60",
+  "runtime_unchanged_since_installed_validation": true,
+  "scope": "Publication of the previously verified skill update, bilingual notes and source installation archive. This receipt and final handoff are subsequent documentation changes on main; v0.3.0 stays fixed at the release commit.",
+  "git_authentication": "Existing gh login used through a command-scoped credential helper after plain Git push lacked credentials. No global Git/auth setting or token was exposed or changed.",
+  "installed_documentation_verification": {
+    "matching_file_sha256": {
+      "HANDOFF.md": "cc5f3baeffa96208664671f9b164f13ddc32e70090188c2483fc3f9194979b30",
+      "REQUIREMENTS.md": "c56e2954566b1c918eac86b9a6046090af7f33a0d471d96008c268f9fd22e988",
+      "docs/launch-copy.md": "cea35f0241ba06ead63adb24288d899f785d21a8ffba93114001dd9e39efc316"
+    },
+    "runtime_files_and_manifest_unchanged": true,
+    "scope": "Publication notes, requirements authorization and current handoff only; this receipt is mirrored separately."
+  }
+}
