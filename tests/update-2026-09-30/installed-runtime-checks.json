@@ -1,0 +1,34 @@
+{
+  "installed": "/Users/lxm/.codex/skills/deep-project-review",
+  "matches_source_runtime": true,
+  "release_manifest_matches_source": true,
+  "digest": "a4768b6532161201f29ab6b8dbec5a0932acb9f690382f40eb4c461b117ee6b8",
+  "files": 11,
+  "commands": [
+    {
+      "command": [
+        "/Users/lxm/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/Users/lxm/.codex/skills/deep-project-review/scripts/freeze_run.py",
+        "--output",
+        "/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/installed-skills-20260930-hn51_d50/snapshot"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"skill_file\": \"/private/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/installed-skills-20260930-hn51_d50/snapshot/SKILL.md\", \"digest\": \"a4768b6532161201f29ab6b8dbec5a0932acb9f690382f40eb4c461b117ee6b8\", \"files\": 11, \"verified\": true}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/lxm/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/installed-skills-20260930-hn51_d50/snapshot/scripts/freeze_run.py",
+        "--verify",
+        "/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/installed-skills-20260930-hn51_d50/snapshot"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"skill_file\": \"/private/var/folders/b3/xm5kc5tx1rd3wqz89jggmybh0000gn/T/installed-skills-20260930-hn51_d50/snapshot/SKILL.md\", \"digest\": \"a4768b6532161201f29ab6b8dbec5a0932acb9f690382f40eb4c461b117ee6b8\", \"files\": 11, \"verified\": true}\n",
+      "stderr": ""
+    }
+  ],
+  "temporary_snapshot_removed": true
+}

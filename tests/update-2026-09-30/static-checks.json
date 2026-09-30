@@ -1,0 +1,27 @@
+{
+  "format_validator": "passed",
+  "yaml_policy": false,
+  "yaml_and_toml": "passed",
+  "local_links_checked": 39,
+  "local_link_scope": "Current root, reference, documentation and example Markdown; file targets only, no external URLs or anchors",
+  "link_errors": [],
+  "snapshot_unit_tests": {
+    "tests": 10,
+    "exit_code": 0
+  },
+  "runtime_digest": "a4768b6532161201f29ab6b8dbec5a0932acb9f690382f40eb4c461b117ee6b8",
+  "runtime_file_hashes": {
+    "LICENSE": "a90aede825b36ef43f74958030d5b58ff154afe76ce04775a1d95e2b089b8021",
+    "README.md": "8cd88944c9187ee955e786be918bbfb6ce561480b2b99555abf803257d26f45c",
+    "README.zh-CN.md": "14637067bf04f66221a1a570b44b412ce06ee9d1ac69332fa089cdf6ee824282",
+    "SKILL.md": "754037a4cdf41b95f6f161dd481868c952af8115024823a272d30409c17ed271",
+    "agents/openai.yaml": "9a874493358e818a09151735ce86a6b522d8bf348a0604def5d7b1078e8b9d69",
+    "assets/social-preview.png": "825ed9ff85d0cdc6d622970ff113c7c666a914f4b1af7acda9e376469ad51ce3",
+    "examples/AGENTS-entry.md": "e665539c0482bd2b14c6e511fe9082b46bb057b741cb3e7c7677e2aaa24e789b",
+    "examples/astra-reviewer.toml": "54c084e479f8081de3f5b86220c0f031d946cda74d0cd9c142f33dc0e5c76369",
+    "references/runtime.md": "781b5ccc6480e0f51e174110036b9b320f4cae5c00c0563e1f48f8e5fe3b557c",
+    "references/templates.md": "a8df5506b9488448aa8a9126251d2c1f8038adba34e0224d9560457f863be736",
+    "scripts/freeze_run.py": "bf77bde05bd4f355d4f846ed3b851a2ac0e43300bed6d47fdb76d8384311760a"
+  },
+  "release_manifest_sha256": "c542860ccd30d3e2e916480e2ea2dab7894501aa741a82935b2a5568fd0ede60"
+}

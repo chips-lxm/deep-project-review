@@ -1,3 +1,5 @@
+Historical artwork source for v0.1.0; labels describe that release, not current model routing. Current routing is in SKILL.md.
+
 ARCHIVED v0.1.0 ART PROMPT. The model labels below describe the original release image and are not current routing or instructions for new artwork. See README.md for current roles. The original raster asset is retained as release history.
 
 Use case: ads-marketing / stylized-concept.

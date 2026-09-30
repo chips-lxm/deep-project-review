@@ -1,0 +1,78 @@
+{
+  "date": "2026-09-30",
+  "source": "/Users/lxm/app1/github-preview/deep-project-review",
+  "installed": "/Users/lxm/.codex/skills/deep-project-review",
+  "all_updated_files_match_source": true,
+  "updated_file_sha256": {
+    ".gitignore": "8007250113764e278fb580c88d8e264590e9a4d9f7850fe4af0d845e0d5167bc",
+    "AGENTS.md": "1074db9dd5db5551349588633f75088179667eb4f5f4e7e40e837804cd6b4024",
+    "HANDOFF.md": "647173dd68d5b1dfb088df894f8651e2e83b8bed7666d8c448a23fe599293896",
+    "README.md": "8cd88944c9187ee955e786be918bbfb6ce561480b2b99555abf803257d26f45c",
+    "README.zh-CN.md": "14637067bf04f66221a1a570b44b412ce06ee9d1ac69332fa089cdf6ee824282",
+    "REQUIREMENTS.md": "df525abd89dea852fa5779ddb20dfaefb5d38c6ee4b4a01b3ce9182a79526d7a",
+    "SKILL.md": "754037a4cdf41b95f6f161dd481868c952af8115024823a272d30409c17ed271",
+    "agents/openai.yaml": "9a874493358e818a09151735ce86a6b522d8bf348a0604def5d7b1078e8b9d69",
+    "docs/image-brief.md": "01170671863660f167aaf2bd036c80efedcb6b6a4e0e7e00d7a2a0ddf88d534a",
+    "docs/image-prompt.txt": "fbffdbf30440000c1fb99d51c2a8f84ac098acd1836bcb383152dfcd6bd7214d",
+    "docs/launch-copy.md": "cc7556b7e350364686a3e552559855b1670db089086b2f6933126fa6f3e0ea01",
+    "references/runtime.md": "781b5ccc6480e0f51e174110036b9b320f4cae5c00c0563e1f48f8e5fe3b557c",
+    "references/templates.md": "a8df5506b9488448aa8a9126251d2c1f8038adba34e0224d9560457f863be736",
+    "runtime-manifest.json": "c542860ccd30d3e2e916480e2ea2dab7894501aa741a82935b2a5568fd0ede60",
+    "scripts/freeze_run.py": "bf77bde05bd4f355d4f846ed3b851a2ac0e43300bed6d47fdb76d8384311760a",
+    "tests/test_freeze_run.py": "e138485f914a01326b8180b2da686fa8b01c99ae7f0ff68a0313cde5663b2a4a",
+    "tests/update-2026-09-30/VALIDATION.md": "c8d18923d1ed95ea5020fde6330fc2b5228f8a839ecc0834278924c41e364a75",
+    "tests/update-2026-09-30/evaluation-record.json": "2f42dcddffb0a92cb557cf121ed8fbe7c248828e6c0114e73c4a2ee50cbbcb33",
+    "tests/update-2026-09-30/forward-evaluation/recheck-results.json": "df6ace4403e44f96b61fd7f6cbad07deb43807dfefcc87478098700a8df78d83",
+    "tests/update-2026-09-30/forward-evaluation/recheck.md": "6d2e5eb01173fc277d7435b836b276f01e340b028ddebe3556f2a90438ad95d3",
+    "tests/update-2026-09-30/forward-evaluation/report.md": "2e02e34d64c80e446ce3f2bf82eb3d441533efb7f938d2e5590583d7a223ff19",
+    "tests/update-2026-09-30/forward-evaluation/results.json": "904c897f16f1b822422a05ece4769c61d5818f1e37495e8ea65878e7dd6a2aec",
+    "tests/update-2026-09-30/forward-evaluation/run-fixtures.py": "16dfd99b6814766417658ba6ab8a143cd9c4b25b218d943ef622860a2486c1a6",
+    "tests/update-2026-09-30/forward-evaluation/run-recheck.py": "1492cb965c90f45d2bca06a2c2381844d6eaddd0af453a6a7e9113c6a590fa8e",
+    "tests/update-2026-09-30/host-discovery.json": "3352bfc64c377e8d79c82a671a6c877a25778d6b6ec761c304c4278a8e145508",
+    "tests/update-2026-09-30/independent-audit/probe-results.json": "012ef21fda2919429052ed47c952cba2e7b6d28e480ca288c7ae9afb4683feaa",
+    "tests/update-2026-09-30/independent-audit/probe.py": "385df9107ec8fe691cc312a58588dfde8efc41892b60b89f126b3a78a7a25612",
+    "tests/update-2026-09-30/independent-audit/recheck-results.json": "69f35fa165575f4fbf19553279629baca301afa169d546f38199ae32f2c67337",
+    "tests/update-2026-09-30/independent-audit/recheck.md": "be9a3790af9d8d0391fd6764be7c4ab713a99f80111299acce40a310db74c4af",
+    "tests/update-2026-09-30/independent-audit/recheck_probe.py": "10e66f65d68e696d242898b5b463a768e258e67083a8f3b7a5076c6a4147e53c",
+    "tests/update-2026-09-30/independent-audit/report.md": "52925ab1717dbd46e3b9b88feabba742fbbbc6cd8d686cb1ad6f5cb193036e80",
+    "tests/update-2026-09-30/installation-checks.json": "83fef7ae01643ee0b4e91323630f95f5d5289871ade4b38ccadb4a45b929f9f5",
+    "tests/update-2026-09-30/installation-context.json": "03338224e228ead6ed35816d7ef3ed22195883155795ac10fa489fae3a48eb16",
+    "tests/update-2026-09-30/installed-runtime-checks.json": "a7e7d05bb0709783f7da06472530e9cffd1f98eb76a54c27816d32ad93467fe2",
+    "tests/update-2026-09-30/probe-discovery.py": "c261a8ef3f12c2ce0b11657a44f1c6a11f5206a2cdb9d6ff52f5b64a76fa41c6",
+    "tests/update-2026-09-30/run-validation.py": "7e8caca7f25ad0085b5392c04b140ee7030017b348e86de7bdf3b4f91d06f012",
+    "tests/update-2026-09-30/snapshot-smoke.json": "6533549c6c943280d01886b6b08d44a6834cf89c705a472e13c68cab05948466",
+    "tests/update-2026-09-30/static-checks.json": "17c489907858a2303de7c214aa7e12b8640a14690304ae9aa994518cca734a59",
+    "tests/update-2026-09-30/validation-commands.json": "7d9838b9cd7824d63b16c74816192a4715eb8b68aed183c83364bec86d9518bb"
+  },
+  "all_untouched_preexisting_installation_files_preserved": true,
+  "preserved_historical_source_installation_differences": {
+    "tests/workflow-results.md": {
+      "source": "b9ff71d7d8129f5eae4675e44f2c7a49db8e627e68ef9f7e04bff5921c7c28b4",
+      "installed": "ea193b51a4ee37d66bcf4dafbc41f321508441a3d5b627a62caf224b1090b8cc"
+    },
+    "tests/installed-discovery-evidence.json": {
+      "source": "f1ab9fd32d08aac79550904d20a1d0b6db48ea3a28ede66b925628591ea02e76",
+      "installed": "a199c6c37bccd2a9daca8880274fd19230f4f4aa6fdb4915d970db9c0b8a7355"
+    },
+    "tests/runtime-evidence.json": {
+      "source": "59643f96e4179aad64fad39b7eca459d3f130843f7f35226d3c65fa75283893d",
+      "installed": "2e622969e533945b518bd4c74aa4d2e04adcbfb8e33b88b1b35b2f808682865c"
+    },
+    "tests/VALIDATION.md": {
+      "source": "66c90af10ff6cab2fb833996097c40ce0a49821ab2d4ff225aabc2aa72c0bd8f",
+      "installed": "6abe9ff32328a9985b56bf74792b009fc75ec0c5957cadd05462aa3922af0c9a"
+    },
+    "tests/discovery-evidence.json": {
+      "source": "122c3f66edb98a4cd13cf8d02944edc5e72a0501affa06ac003cafe898d8fbc2",
+      "installed": "cbfcfbe3317072480ada0c532efd765e39af567df38ae1127cd3e532db68752f"
+    },
+    "tests/w01/execution.json": {
+      "source": "ef89d6b5abfe22eaafb14456aabbfdb3e682119d8edc73962f0985e4960a9dd6",
+      "installed": "b434686928b6a19da579fa5aef01e7de0394806a889866b684e66fe529449c18"
+    }
+  },
+  "record_excluded_from_own_hashes": "tests/update-2026-09-30/final-installation-checks.json",
+  "initial_installation": "installation-checks.json",
+  "runtime_validation": "installed-runtime-checks.json",
+  "host_discovery": "host-discovery.json"
+}

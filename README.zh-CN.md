@@ -8,7 +8,7 @@
 flowchart LR
   L["当前会话：用户选择的主模型"] --> R["2—4 名独立审查者"]
   R --> A["独立 gpt-6-astra · xhigh：结论复核"]
-  A --> F["授权内修复：Sol 按难度分档；Luna high"]
+  A --> F["授权内修复：6.1 Sol high/xhigh/max；Luna high"]
   F --> V["独立验收者"]
 ```
 
@@ -52,10 +52,11 @@ Astra · xhigh 验证证据、处理冲突与误报
 | 模型 | 优先任务 | 推理档位 |
 | --- | --- | --- |
 | gpt-6-luna | 规则明确、范围小、低风险、容易核对的任务 | 始终 `high` |
-| gpt-6-sol | 常规模块、边界清晰的实现与测试补充，以及跨模块关系、复杂逻辑、公共接口与根因分析 | `medium` / `high`，必要时 `xhigh` |
+| gpt-6.1-sol | 常规模块、边界清晰的实现与测试补充，以及跨模块关系、复杂逻辑、公共接口与根因分析 | `high` 起步；有明确难点时直接 `xhigh` / `max` |
+| gpt-6-sol | 已有验证支持的任务路径或同任务对照支持的适用场景；不作静默回退 | `medium / high / xhigh` |
 | gpt-6-astra | 系统性缺陷、高不确定性与重大冲突 | `high` / `xhigh`；单独的结论复核固定 `xhigh` |
 
-这些是调度默认策略，实际分工按任务选择，不要求每次同时运行所有三个模型。合并模型路由不等于合并必须独立的审查者、结论复核者、修复者和验收者职责。**当前主会话仍负责统筹，单独的 Astra 负责结论复核。**
+这些是调度默认策略，实际分工按任务选择，不要求每次同时运行所有四个可选模型。首轮审查保持独立判断，Astra 单独复核；验收者不能参与该项修复，未参与修复的审查者可以复用为验收者。**当前主会话仍负责统筹，单独的 Astra 负责结论复核。**
 
 真实模型 ID、参数和配置生效检查见 [宿主适配说明](references/runtime.md)。模型不可用或无法验证配置生效时，明确报告限制，不静默降级。
 
@@ -104,7 +105,7 @@ $deep-project-review 复审当前项目，修复已确认的问题并独立验�
 - 在旧模型映射下核实真实 **5.6 Terra · high** 和 **6 Astra · xhigh** 测试子智能体的宿主运行配置。
 - Skill 格式、配置解析，以及本机 Codex 安装发现验证。
 
-以上属于早期版本记录，范围见[历史验证报告](tests/VALIDATION.md)。当前模型映射的检查与限制见 [2026-09-23 迁移验证报告](tests/migration-2026-09-23/VALIDATION.md)。新版已实际完成一个隔离样例的“独立审查—Astra 复核—修复—独立验收”，验收 81/81 项通过；首轮发现的一处证据归因错误已补清规则并定向复测。尚未验证新会话的宿主加载，不保证所有任务的质量、耗时或 Token 用量收益。
+以上属于早期版本记录，范围见[历史验证报告](tests/VALIDATION.md)。此前模型映射的检查与限制见 [2026-09-23 迁移验证报告](tests/migration-2026-09-23/VALIDATION.md)。该历史版本已实际完成一个隔离样例的“独立审查—Astra 复核—修复—独立验收”，验收 81/81 项通过；首轮发现的一处证据归因错误已补清规则并定向复测。尚未验证新会话的宿主加载，不保证所有任务的质量、耗时或 Token 用量收益。
 
 ## 项目内容
 
@@ -122,6 +123,18 @@ deep-project-review/
 ## 相关项目
 
 [Adaptive Model Orchestrator](https://github.com/chips-lxm/adaptive-model-orchestrator) 用于按任务形态组织模型协作；Deep Project Review 用于已有成果的独立二次复审。两者可分别使用，本 Skill 保持自己的明确启动、固定 Astra 复核和修改权限要求。
+
+
+## 运行版本与验证
+
+2026-09-30 路由以 6.1 Sol `high` 起步，有明确难点时可直接选 `xhigh` 或 `max`。旧 6 Sol 保留已验证的适用路径；Luna 固定 `high`；项目深度复审始终保留单独的 Astra `xhigh` 复核。这些是执行策略，不是已测得的质量或 Token 节省保证。
+
+长任务或多智能体运行时，在不会被自动发现的证据目录使用 `python3 scripts/freeze_run.py --output /绝对路径/本轮证据/skill-snapshot`。所有分支和续答读取快照入口及其相对资源；用 `python3 scripts/freeze_run.py --verify /绝对路径/本轮证据/skill-snapshot` 核对完整性。快照包含运行资源，排除 Git 和历史测试；只记版本号不能固定文件。安装更新应在活动任务结束或安排明确切换点后进行。
+
+
+快照创建前会核对随包的 `runtime-manifest.json`，拒绝冻结部分更新的安装；该文件必须与运行文件一起同步。维护者在有意修改后用 `python3 -B scripts/freeze_run.py --seal` 重建清单，正常运行不得用它绕过完整性失败。
+
+本次结果见[验证记录](tests/update-2026-09-30/VALIDATION.md)。维护入口为 [AGENTS.md](AGENTS.md)、[已确认要求](REQUIREMENTS.md) 和[交接](HANDOFF.md)。
 
 ## 许可证
 

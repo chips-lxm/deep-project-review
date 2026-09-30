@@ -1,3 +1,5 @@
+Historical artwork source for v0.1.0; labels describe that release, not current model routing. Current routing is in SKILL.md.
+
 # 宣传封面安排
 
 > 归档：这是 v0.1.0 旧模型阵容的美术说明，不是当前模型路由或新版封面的制作指引。当前职责见 [项目介绍](../README.zh-CN.md)。保留原图与本说明作为发布历史。

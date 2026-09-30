@@ -8,7 +8,7 @@
 flowchart LR
   L["Current session: user-selected lead"] --> R["2–4 independent reviewers"]
   R --> A["gpt-6-astra · xhigh: separate adjudication"]
-  A --> F["Authorized repairs: Sol by difficulty; Luna high"]
+  A --> F["Authorized repairs: 6.1 Sol high/xhigh/max; Luna high"]
   F --> V["Independent verifier"]
 ```
 
@@ -52,10 +52,11 @@ The default limit is two repair–verification rounds. Unresolved issues, blocke
 | Model | Preferred work | Reasoning |
 | --- | --- | --- |
 | gpt-6-luna | Clear, bounded, low-risk tasks with straightforward checks | Always `high` |
-| gpt-6-sol | Ordinary modules, scoped implementation, test additions, cross-module relationships, shared interfaces, and root causes | `medium` / `high`; `xhigh` when needed |
+| gpt-6.1-sol | Ordinary modules, scoped implementation, test additions, cross-module relationships, shared interfaces, and root causes | Start at `high`; directly use `xhigh` / `max` for justified difficulty |
+| gpt-6-sol | Previously verified task paths or evidence-backed matched-task advantages; no silent fallback | `medium / high / xhigh` |
 | gpt-6-astra | Systemic defects, high uncertainty, and major conflicts | `high` / `xhigh`; separate finding adjudication always `xhigh` |
 
-These are routing defaults, not a requirement to use all three models on every run. Consolidating model routes never combines independent reviewer, adjudicator, fixer, or verifier responsibilities. **The current session remains the coordinator; a separate Astra adjudicator provides technical judgment.**
+These are routing defaults, not a requirement to use all four available models on every run. First-round reviewers keep independent judgments, and Astra adjudication is separate. A verifier must not have made the fix; a reviewer who did not fix it may be reused for verification. **The current session remains the coordinator; a separate Astra adjudicator provides technical judgment.**
 
 See [runtime adaptation](references/runtime.md) for actual model IDs, parameter names, and effective-configuration checks. Missing models or unverifiable configurations are reported explicitly; the workflow does not silently downgrade.
 
@@ -104,7 +105,7 @@ Historical v0.1.0 authoring validation included:
 - Host-record verification of real **5.6 Terra · high** and **6 Astra · xhigh** evaluation subagents under the earlier model map.
 - Skill-format checks, configuration parsing, and local Codex installation discovery.
 
-Those results describe the earlier release; see its [historical validation report](tests/VALIDATION.md). The [2026-09-23 migration validation report](tests/migration-2026-09-23/VALIDATION.md) records current mapping checks and their limits. The new evidence includes one isolated review–adjudication–repair–independent-verification run with 81/81 acceptance checks, plus a corrected first-pass evidence-attribution error and its targeted retest. Fresh-session host loading was not tested; no universal quality, latency, or token savings are claimed.
+Those results describe the earlier release; see its [historical validation report](tests/VALIDATION.md). The [2026-09-23 migration validation report](tests/migration-2026-09-23/VALIDATION.md) records the previous mapping checks and their limits. That historical evidence includes one isolated review–adjudication–repair–independent-verification run with 81/81 acceptance checks, plus a corrected first-pass evidence-attribution error and its targeted retest. Fresh-session host loading was not tested; no universal quality, latency, or token savings are claimed.
 
 ## What is included
 
@@ -112,6 +113,7 @@ Those results describe the earlier release; see its [historical validation repor
 deep-project-review/
 ├── SKILL.md                 Workflow and hard constraints
 ├── agents/openai.yaml       Display metadata and explicit invocation policy
+├── scripts/freeze_run.py    Per-run rule snapshots
 ├── references/              Runtime mapping and report templates
 ├── examples/                Optional entry and Astra configuration
 ├── tests/                   Cases, results, and public validation records
@@ -124,6 +126,18 @@ The operational skill and detailed references are currently written in Simplifie
 ## Related project
 
 [Adaptive Model Orchestrator](https://github.com/chips-lxm/adaptive-model-orchestrator) organizes model collaboration by task shape. Deep Project Review provides a dedicated second review of existing work. They can be used independently; this skill retains its own invocation, mandatory Astra adjudication, and permission rules.
+
+
+## Version consistency and validation
+
+The 2026-09-30 route starts GPT-6.1 Sol at `high` and permits direct `xhigh` or `max` selection. GPT-6 Sol remains available for verified task paths. Luna stays at `high`; Deep Project Review always retains a separate Astra `xhigh` adjudicator. These are routing policies, not measured quality or token-savings guarantees.
+
+For long or multi-agent runs, use `python3 scripts/freeze_run.py --output /absolute/run-evidence/skill-snapshot` outside skill discovery directories. Every child and continuation reads that frozen entrypoint and its relative resources. Verify it with `python3 scripts/freeze_run.py --verify /absolute/run-evidence/skill-snapshot`. The snapshot contains runtime resources, not Git or historical tests. A recorded version number alone does not pin files. Finish active runs or arrange a version boundary before replacing an installation.
+
+
+Snapshot creation checks the bundled `runtime-manifest.json` and rejects partial installations; distribute it with all runtime resources. After intentional edits, maintainers rebuild it with `python3 -B scripts/freeze_run.py --seal`. Normal runs must not reseal to bypass integrity failures.
+
+See [current validation](tests/update-2026-09-30/VALIDATION.md). Maintainers start with [AGENTS.md](AGENTS.md), [confirmed requirements](REQUIREMENTS.md), and [handoff](HANDOFF.md).
 
 ## License
 

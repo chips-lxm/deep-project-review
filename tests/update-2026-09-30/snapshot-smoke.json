@@ -1,0 +1,9 @@
+{
+  "create_exit": 0,
+  "verify_exit": 0,
+  "files": 11,
+  "digest": "a4768b6532161201f29ab6b8dbec5a0932acb9f690382f40eb4c461b117ee6b8",
+  "copied_script_verified_snapshot": true,
+  "release_manifest_copied_exactly": true,
+  "snapshot_location": "temporary directory, removed after test"
+}
