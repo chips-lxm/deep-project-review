@@ -2,21 +2,18 @@
 
 ## 当前路由映射
 
-修订：2026-09-30；按每轮宿主能力核实。主会话保持用户选择，以下用于子任务。
+修订：2026-11-23。主会话保持用户选择，以下配置仅用于子任务，每轮以当前宿主工具及运行证据核实。
 
-| 用户称呼 | 实际 model ID | 本 Skill 使用的推理值 |
+| 角色 | `model` | `reasoning_effort` |
 | --- | --- | --- |
-| GPT-6 Luna | gpt-6-luna | 固定 high |
-| GPT-6.1 Sol（默认实现、集成、审查与验收） | gpt-6.1-sol | high 起步；允许直接 xhigh / max |
-| GPT-6 Sol（已有验证支持的适用路径） | gpt-6-sol | medium / high / xhigh |
-| Astra | gpt-6-astra | high / xhigh |
-| Astra·极高（固定复核） | gpt-6-astra | xhigh |
+| 独立初查、修复、独立验收 | `gpt-6.2-sol` | 默认 `high`，按任务选择 `medium` / `xhigh` / `max` |
+| 独立统一复核、重大／复杂／争议修改后的定向复核 | `gpt-6.2-astra` | 固定 `xhigh` |
 
-高 = `high`，极高 = `xhigh`，`max` 是独立档位。6.1 Sol 的困难核心任务可直接使用 max；不要把 Astra 固定复核的 xhigh 改成 max，也不从昵称推断模型。6.1 Sol 默认 high，不自动降到 medium 或更低。旧 6 Sol 不是必经中间层，替代路由须说明依据，不能静默回退。
+Sol 档位按实际困难选择。范围明确、低风险、能独立快速验证的局部任务可用 `medium`。常规任务用 `high`，跨模块根因、复杂推导或困难验收用 `xhigh`。只有最困难且有具体理由的任务使用 `max`。明确困难可直接选择相应高档位；档位只影响执行配置，覆盖和证据要求仍按任务实际风险确定。
 
-当前 desktop 工具声明列出这四个 ID 及本表档位；API 支持不证明本轮调用成功。缓存可能滞后，缺项不能单独否决工具明确支持的合法调用；目录存在也不证明生效。结合工具契约、实际调用及可信运行证据分别记录 requested/effective。历史测试与缓存保留原日期，不改写成 6.1 Sol 已验证。
+当前 Codex desktop 子智能体工具声明列出了两个模型 ID 及本表档位。工具声明、实际请求和运行配置分别核实。目录缓存可能滞后，缺项不能单独否决工具明确支持的合法调用。保留历史证据对应的日期与模型。
 
-本轮新模型不可用时保留已完成证据并报告受影响阶段，不静默回退旧模型、降低强度或把其他配置写成指定配置。Astra xhigh 是必需阶段，不得由 Sol 替代。不要因缓存缺项先行阻止工具声明支持的合法调用，也不要因实际失败而无限重试。
+模型或指定档位不可用时保留已完成证据并报告受影响阶段。统一及定向 Astra 复核固定 `xhigh`，无法取得合规复核时相关流程受阻。工具结果用于判断具体故障，避免无限重试或静默替换模型、下调档位。
 
 ## 固定本轮规则
 
@@ -38,19 +35,19 @@ python3 scripts/freeze_run.py --output /绝对路径/本轮证据/skill-snapshot
 {
   "task_name": "review_core",
   "fork_turns": "none",
-  "model": "gpt-6.1-sol",
+  "model": "gpt-6.2-sol",
   "reasoning_effort": "high",
   "message": "只审查本轮已授权基准的核心逻辑。读取本轮规则快照、原始要求及实际材料；不修改正式项目或读取其他首轮审查者报告；按快照内模板返回证据。派发前补齐真实快照路径、共同记录、范围和验收项。"
 }
 ```
 
-Astra 结论复核独立调用如下；调用前填齐实际材料，不要原样发送泛化示例：
+Astra 统一复核独立调用如下。定向复核沿用固定配置，并提供修复后基准和当前实证。调用前填齐实际材料及路径：
 
 ```json
 {
   "task_name": "astra_adjudication",
   "fork_turns": "none",
-  "model": "gpt-6-astra",
+  "model": "gpt-6.2-astra",
   "reasoning_effort": "xhigh",
   "message": "独立复核本轮所有审查结论。读取原始需求、完整报告、覆盖矩阵、基准与实际证据；解决冲突、误报和重复；对重大问题追溯验证；按四类结论输出修复边界和验收标准。这里应补齐所有材料绝对路径及完整报告索引。"
 }
@@ -66,8 +63,8 @@ Astra 结论复核独立调用如下；调用前填齐实际材料，不要原�
 
 1. 检查当前工具声明及可取得的模型目录；保存来源、时间、支持档位和实际参数名。目录缓存与工具声明不一致时保留差异，不能仅凭缓存否决当前工具明确支持的配置。
 2. 保存结构化调用参数、工具返回的 agent ID/任务 ID、成功/失败结果。
-3. 读取宿主返回的运行模型与档位，或该子任务可定位的运行事件/会话元数据。记录 `requested` 与 `effective` 分开列出。仅保存必要字段，不读取或传播凭据和其他任务内容。
-4. 某些宿主的列表只显示名称和状态、不显示配置。可检查对应子任务的 `turn_context` 等可信运行记录；不能把子智能体自己的“我是 Astra”当作证据。工具若明确保证接受即采用指定配置，可记录该契约及成功返回，但仍应注明无独立 effective 回显。
+3. 读取宿主返回的运行模型与档位，或该子任务可定位的运行事件/会话元数据。分别记录 `requested` 与 `effective` 及证据来源。在[结构化证据记录](templates.md#结构化证据检查)引用相关摘录。仅保存必要字段，不读取或传播凭据和其他任务内容。
+4. 某些宿主的列表只显示名称和状态、不显示配置。本机 Codex 可由子任务提供其 `CODEX_THREAD_ID`，据此定位自己的会话记录，仅摘录 `turn_context` 中的模型和档位。工具若明确保证接受即采用指定配置，可记录该契约及成功返回，并注明缺少独立回显。子智能体对自身配置的文字描述不作为生效证据。
 5. 如果宿主既没有有效配置回显/运行元数据，也没有足够明确的采用参数契约，标为“配置生效无法验证”，停止依赖该配置的后续阶段。禁止声称完成指定多模型流程。
 
 配置验证应复用实际审查任务的运行记录，不为每轮额外启动一群无目标探针。预检失败保留已完成证据，报告缺少什么；恢复后从受阻阶段继续，不能把此前未发生的步骤补写为通过。
@@ -81,7 +78,7 @@ Astra 结论复核独立调用如下；调用前填齐实际材料，不要原�
 ## 来源
 
 - [官方子智能体说明](https://learn.chatgpt.com/docs/agent-configuration/subagents)：配置字段、继承与自定义 agent。以实际宿主 schema 为调用依据。
-- [GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol)、[GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra)、[GPT-6 Sol](https://developers.openai.com/api/docs/models/gpt-6-sol)、[GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna)：模型 ID 和 API 推理支持；不证明账号调用成功。6.1 Sol high 起步、Luna 固定 high 是本 Skill 要求。接近 Astra 的定位不构成 max 与 Astra 全面等价的保证。
-- 本机 skill-creator 的 `references/openai_yaml.md` 与当前宿主工具声明：`allow_implicit_invocation: false` 保留显式入口。官方 skills 页面本次重定向到 [Build skills](https://learn.chatgpt.com/docs/build-skills)，抓取正文未找到该 policy 字段，因此不冒称已从该网页核实字段。
+- 当前 Codex desktop `collaboration.spawn_agent` 工具声明列出 `gpt-6.2-sol`、`gpt-6.2-astra` 与支持的 `reasoning_effort`。本 Skill 的默认值和固定复核档位由本项目需求规定。
+- [Build skills](https://learn.chatgpt.com/docs/build-skills) 说明 `allow_implicit_invocation: false` 保留显式 `$skill` 调用。
 
 运行快照须先匹配随包的 `runtime-manifest.json`，部分安装或清单缺失时失败并保留源文件。运行中不调用 `--seal` 掩盖不一致；该选项仅供维护者在有意修改后重建包清单。脚本拦截常见用户、仓库和插件缓存安装目录；调用方仍须避开宿主额外配置的发现目录。摘要用于内容一致性检查，不提供权限隔离或对抗性身份认证。

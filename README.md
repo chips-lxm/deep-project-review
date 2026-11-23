@@ -6,15 +6,17 @@
 
 ```mermaid
 flowchart LR
-  L["Current session: user-selected lead"] --> R["2–4 independent reviewers"]
-  R --> A["gpt-6-astra · xhigh: separate adjudication"]
-  A --> F["Authorized repairs: 6.1 Sol high/xhigh/max; Luna high"]
-  F --> V["Independent verifier"]
+  L["Current session retains the user-selected model"] --> R["2–4 independent GPT-6.2 Sol reviewers"]
+  R --> A["Separate adjudication with GPT-6.2 Astra xhigh"]
+  A --> G["Check review evidence and any repair authorization"]
+  G --> F["Authorized repairs with GPT-6.2 Sol"]
+  F --> V["Independent GPT-6.2 Sol verification"]
+  V --> E["Check acceptance evidence, including any required Astra recheck"]
 ```
 
 **Give finished work an independent review backed by evidence.**
 
-Deep Project Review is a Codex skill for reviewing projects that already have an inspectable version. The user invokes it explicitly. Usually 2–4 real subagents examine the work independently; a **separate gpt-6-astra · xhigh** adjudicator validates their findings; the current session coordinates authorized repairs and independent verification while remaining on the user's selected model.
+Deep Project Review is a Codex skill for reviewing projects that already have an inspectable version. The user invokes it explicitly. Usually 2–4 real GPT-6.2 Sol subagents examine the work independently. A separate `gpt-6.2-astra` adjudicator at `xhigh` validates their findings. The current session coordinates authorized repairs and independent verification on the user's selected model.
 
 It applies to code, documents, spreadsheets, designs, and presentations. Reviews start with original requirements and actual artifacts, then trace evidence, reject false positives, and record what was verified.
 
@@ -25,9 +27,10 @@ A completion summary, a single test run, and an implementer's own confirmation e
 This skill organizes that work around a defined baseline, explicit responsibilities, permission boundaries, and a stopping condition.
 
 - **Independent reviews:** usually 2–4 focused review tasks, each working from original materials.
-- **Evidence adjudication:** mandatory Astra · `xhigh` review of evidence, conflicts, false positives, and duplicates.
-- **Task-aware repairs:** model selection based on impact, dependencies, and verification difficulty.
-- **Independent acceptance:** a subagent who did not implement the repair checks the original issue and related regressions.
+- **Evidence adjudication** by a separate Astra `xhigh` subagent that checks findings, resolves conflicts, and identifies omissions.
+- **Scoped repairs** with Sol reasoning effort selected by impact, dependencies, and verification difficulty.
+- **Independent acceptance** by a Sol subagent separate from the repairer, with a focused Astra `xhigh` recheck for major, complex, or disputed changes.
+- **Evidence checks** for review coverage, repair authorization, baseline, and acceptance at the relevant revision.
 
 ## How it works
 
@@ -38,25 +41,23 @@ Current session establishes requirements, baseline, permissions, and acceptance 
     ↓
 Multiple independent review subagents
     ↓
-Astra · xhigh validates evidence and resolves conflicts
+Astra xhigh validates evidence and resolves conflicts
     ↓
-Current session prepares confirmed findings and a concrete repair plan
+Current session checks the review record and prepares a concrete repair plan
     ├─ Review only / no write authorization → report and repair plan
-    └─ Repairs authorized → scoped fixes → independent verification → delivery
+    └─ Repairs authorized → evidence check → scoped fixes → independent verification → acceptance check → delivery
 ```
 
-The default limit is two repair–verification rounds. Unresolved issues, blockers, and next steps are reported when that limit is reached; continuing requires an explicit budget adjustment.
+Each run allows at most two repair–verification rounds. The final report lists unresolved issues, blockers, and next steps when the run reaches that limit.
 
 ## Model roles
 
 | Model | Preferred work | Reasoning |
 | --- | --- | --- |
-| gpt-6-luna | Clear, bounded, low-risk tasks with straightforward checks | Always `high` |
-| gpt-6.1-sol | Ordinary modules, scoped implementation, test additions, cross-module relationships, shared interfaces, and root causes | Start at `high`; directly use `xhigh` / `max` for justified difficulty |
-| gpt-6-sol | Previously verified task paths or evidence-backed matched-task advantages; no silent fallback | `medium / high / xhigh` |
-| gpt-6-astra | Systemic defects, high uncertainty, and major conflicts | `high` / `xhigh`; separate finding adjudication always `xhigh` |
+| `gpt-6.2-sol` | Independent initial reviews, scoped repairs, independent acceptance | `high` by default. `medium` for bounded, low-risk work with a straightforward check, `xhigh` for difficult work, `max` only for the hardest justified cases. |
+| `gpt-6.2-astra` | Separate adjudication and focused rechecks after major, complex, or disputed changes | Fixed `xhigh` |
 
-These are routing defaults, not a requirement to use all four available models on every run. First-round reviewers keep independent judgments, and Astra adjudication is separate. A verifier must not have made the fix; a reviewer who did not fix it may be reused for verification. **The current session remains the coordinator; a separate Astra adjudicator provides technical judgment.**
+First-round reviewers form independent judgments. The separate Astra adjudicator makes the technical determination, and the current session coordinates the run. A first-round reviewer may return as a verifier when another agent performed the repair and its configuration fits the acceptance task.
 
 See [runtime adaptation](references/runtime.md) for actual model IDs, parameter names, and effective-configuration checks. Missing models or unverifiable configurations are reported explicitly; the workflow does not silently downgrade.
 
@@ -114,6 +115,7 @@ deep-project-review/
 ├── SKILL.md                 Workflow and hard constraints
 ├── agents/openai.yaml       Display metadata and explicit invocation policy
 ├── scripts/freeze_run.py    Per-run rule snapshots
+├── scripts/check_evidence.py  Review, repair, and acceptance record checks
 ├── references/              Runtime mapping and report templates
 ├── examples/                Optional entry and Astra configuration
 ├── tests/                   Cases, results, and public validation records
@@ -130,14 +132,14 @@ The operational skill and detailed references are currently written in Simplifie
 
 ## Version consistency and validation
 
-The 2026-09-30 route starts GPT-6.1 Sol at `high` and permits direct `xhigh` or `max` selection. GPT-6 Sol remains available for verified task paths. Luna stays at `high`; Deep Project Review always retains a separate Astra `xhigh` adjudicator. These are routing policies, not measured quality or token-savings guarantees.
+Record the current revision and reference the original evidence at each stage. The [evidence checker](references/templates.md#结构化证据检查) checks the consistency of the run record before reporting a completed review, starting a repair round, or reporting acceptance. Agents still examine original materials and perform the critical acceptance checks.
 
 For long or multi-agent runs, use `python3 scripts/freeze_run.py --output /absolute/run-evidence/skill-snapshot` outside skill discovery directories. Every child and continuation reads that frozen entrypoint and its relative resources. Verify it with `python3 scripts/freeze_run.py --verify /absolute/run-evidence/skill-snapshot`. The snapshot contains runtime resources, not Git or historical tests. A recorded version number alone does not pin files. Finish active runs or arrange a version boundary before replacing an installation.
 
 
 Snapshot creation checks the bundled `runtime-manifest.json` and rejects partial installations; distribute it with all runtime resources. After intentional edits, maintainers rebuild it with `python3 -B scripts/freeze_run.py --seal`. Normal runs must not reseal to bypass integrity failures.
 
-See [current validation](tests/update-2026-09-30/VALIDATION.md). Maintainers start with [AGENTS.md](AGENTS.md), [confirmed requirements](REQUIREMENTS.md), and [handoff](HANDOFF.md).
+See [handoff](HANDOFF.md) for current validation and [the September 2026 validation report](tests/update-2026-09-30/VALIDATION.md) for the earlier routing. Maintainers start with [AGENTS.md](AGENTS.md) and [confirmed requirements](REQUIREMENTS.md).
 
 ## License
 

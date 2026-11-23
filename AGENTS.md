@@ -5,7 +5,7 @@
 - 用户要求与边界见 [REQUIREMENTS.md](REQUIREMENTS.md)；当前状态、检查点、验证及安装状态见 [HANDOFF.md](HANDOFF.md)。
 - 使用说明保留在现有中英文 README；执行规则在 SKILL.md，细节按其链接读取。历史测试及发布记录保留原日期、模型和结果。
 - 修改规则时核对参考文件、示例和中英文说明，保持现有隐式调用政策。讨论或维护深度复审 Skill 不启动其项目复审流程。
-- 验证：skill-creator 的 quick_validate.py；`python3 -B tests/test_freeze_run.py`；YAML/TOML 解析、包内链接、Git 差异；实质规则调整需做独立行为评估。静态检查、合成行为判断、真实流程和性能对照分别记录。
+- 验证：skill-creator 的 quick_validate.py；`python3 -B -m unittest discover -s tests -p 'test_*.py'`（运行快照与证据检查）；YAML/TOML 解析、包内链接、Git 差异。实质规则调整需做独立行为评估。静态检查、合成案例执行、真实项目流程和性能对照分别记录。
 - 系统 Python/Git 不可用时可使用宿主自带运行时；不得自动接受系统许可证。
 - 修改前保全现有改动。安装只同步本轮相关文件，先检查活动任务及安装漂移，不覆盖本机历史证据。必要的已授权修复与本地提交可直接完成；推送和发布单独依据用户授权。
 

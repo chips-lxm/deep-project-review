@@ -17,13 +17,76 @@ Skill 修订 / 运行快照入口 / 内容摘要 / 完整性验证：
 已有测试及其版本、实际结果；证据路径：
 缺少材料与影响：
 报告与隔离测试目录：
-默认循环上限 2；已用轮数；用户预算调整：
+修复—复验上限 2；已用轮数：
 ```
 
 | 需求/验收 ID | 原始材料 | 对应成果位置及版本 | 审查任务 | 实际覆盖 | 状态/证据 |
 | --- | --- | --- | --- | --- | --- |
 
 覆盖状态使用：已检查 / 未检查 / 无法验证 / 执行失败；“无问题”只描述已检查范围的发现情况，不能替代覆盖状态。
+
+## 结构化证据检查
+
+在本轮证据目录维护一个 `evidence.json` 索引。完整报告、反对证据、权限原文和日志仍保存在各自原始位置。用同一套实际成果标识关联基准和每次修改后的版本。Git HEAD 相同时也要区分会影响审查的 staged、unstaged 和 untracked 内容。传给 `--revision` 的值必须来自本次对当前成果的独立核对。
+
+用快照中的脚本运行以下命令（将路径、版本和问题 ID 替换为本轮实际值）：
+
+```sh
+python3 -B /本轮快照/scripts/check_evidence.py /本轮证据/evidence.json --phase review --revision review-base
+python3 -B /本轮快照/scripts/check_evidence.py /本轮证据/evidence.json --phase repair --revision review-base --finding F1
+python3 -B /本轮快照/scripts/check_evidence.py /本轮证据/evidence.json --phase accept --revision after-fix
+```
+
+- `review`：统一复核后运行，只审查时也是交付前的检查。核对同一基准、不同初审者、独立 Astra 裁决、完整初审报告集合和关键需求覆盖。缺口保留为部分完成或受阻。
+- `repair`：每轮修复前运行。用可重复的 `--finding` 列出本轮拟修复的问题，检查均已由 Astra 确认、在用户实际授权内、关联的关键需求均已检查且仍有修复轮次。其他未完成覆盖随结果保留，仍可在授权内推进已有证据支持的修复。发出修复任务时登记并保留本轮，等待补查或恢复时更新同一轮，不用新条目重置上限。
+- `accept`：交付验收结果前运行。核对修复历史顺序、每项修复对应的关键需求覆盖、修改后版本、亲自做关键检查的独立验收者及结果。适合的重大改动还需要定向 Astra 复核。结果列出本次已验收发现、未修复的确认项和初审中不完整的关键覆盖，交付时据实说明不同范围。
+
+脚本只读取索引，输出 `ready` 和当前阶段信息。返回码 0 表示该阶段的记录一致，1 表示记录有缺口或不可读取。任何报告路径、资源或宿主事件都要真实可核对。脚本不读取报告内容、不核实身份和权限来源，也不自行执行项目检查。不要将结构检查成功当成实际验收通过。
+
+下面示例展示从审查到验收的同一份索引。只审查时可省略 `repair_authorization`，并保留空的 `rounds`。修复前保留已发生的轮次，修复后补全本次轮次的真实记录。
+
+```json
+{
+  "format": 1,
+  "baseline": "review-base",
+  "agents": [
+    {"agent_id": "review-a", "effective_model": "gpt-6.2-sol", "effective_effort": "high", "configuration_evidence": ["host/review-a.json"]},
+    {"agent_id": "review-b", "effective_model": "gpt-6.2-sol", "effective_effort": "xhigh", "configuration_evidence": ["host/review-b.json"]},
+    {"agent_id": "astra", "effective_model": "gpt-6.2-astra", "effective_effort": "xhigh", "configuration_evidence": ["host/adjudication.json"]},
+    {"agent_id": "fixer", "effective_model": "gpt-6.2-sol", "effective_effort": "medium", "configuration_evidence": ["host/fixer.json"]},
+    {"agent_id": "verifier", "effective_model": "gpt-6.2-sol", "effective_effort": "high", "configuration_evidence": ["host/verifier.json"]}
+  ],
+  "reviews": [
+    {"agent_id": "review-a", "revision": "review-base", "evidence": ["reports/review-a.md"]},
+    {"agent_id": "review-b", "revision": "review-base", "evidence": ["reports/review-b.md"]}
+  ],
+  "coverage": [
+    {"requirement_id": "RQ1", "revision": "review-base", "critical": true, "status": "checked", "evidence": ["reports/review-a.md#RQ1"]}
+  ],
+  "adjudication": {
+    "agent_id": "astra", "revision": "review-base", "reviewer_ids": ["review-a", "review-b"],
+    "evidence": ["reports/adjudication.md"]
+  },
+  "findings": [
+    {"id": "F1", "disposition": "repair", "requirement_ids": ["RQ1"], "evidence": ["reports/adjudication.md#F1"]}
+  ],
+  "repair_authorization": {"evidence": ["authorization.md"], "finding_ids": ["F1"]},
+  "rounds": [
+    {
+      "number": 1, "before": "review-base", "after": "after-fix",
+      "fixes": [{"finding_id": "F1", "agent_ids": ["fixer"], "evidence": ["repair/F1.md"], "focused_review_required": false}],
+      "checks": [{"finding_id": "F1", "agent_id": "verifier", "revision": "after-fix", "status": "passed", "evidence": ["verification/F1.md"]}]
+    }
+  ]
+}
+```
+
+- 每个参与者在 `agents` 中登记一次生效的模型、档位及其宿主证据，其他记录引用同一 ID。初审、修复和独立验收者适用 [Sol 推理档位](runtime.md#当前路由映射)，统一和定向复核者使用固定的 Astra 配置。仅在宿主回显、可信运行记录，或结构化调用契约明确保证采用参数且调用成功时记录生效的配置。保留证据来源及是否有独立回显。
+- 覆盖状态使用 `checked`、`unchecked`、`blocked`、`failed`。`checked` 要有实际检查证据，表示检查发生，检查发现的缺陷另记在 `findings`。
+- 裁决分别记录 `repair`（确认需要修复）、`optimize`（建议优化）、`unverified`（待验证）、`dismissed`（不成立或重复）。每个确认需修复的问题关联至少一个覆盖矩阵中的需求或验收项，并附问题证据。
+- 修复轮次包括所有实际修复者。验收结果用 `passed`、`failed`、`not_run`、`blocked` 并引用结果或限制。已有修改但缺独立验收者时保留缺口，待完成后再核对该轮。未通过的本轮仍然计数。
+- 对重大、复杂或有争议的修改设 `focused_review_required: true`。`checks[].focused_review` 记录未参与该项修复的 Astra 的 `agent_id`、修改后 `revision` 和 `evidence`。
+- 后续轮次改变了版本时，重新核对较早的验收。旧证据仍适用时，可在 `reused_checks` 中为对应问题记录 `finding_id`、`from_revision`、当前 `revision`、支持复用的 `evidence`。影响范围不明或关键输入已变化时，请未参与该项修复的验收者在当前成果上补做关键检查，将当前复验结果加入本轮 `checks`，保留前一轮结果。
 
 ## 每次真实委派记录
 

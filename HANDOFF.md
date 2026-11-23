@@ -1,24 +1,21 @@
 # 当前交接
 
-更新：2026-09-30（Australia/Brisbane）。本轮规则更新和安装已完成，源包、安装运行包与宿主发现已验证；最终本地检查点收录本文件及本轮证据。
+更新于 2026-11-23（Asia/Shanghai），当前交付为 v0.4.0。
 
 ## 入口与现状
 
-- 维护源：`/Users/lxm/app1/github-preview/deep-project-review`，独立仓库，分支 `main`；运行副本：`~/.codex/skills/deep-project-review`。需求依据见 [REQUIREMENTS.md](REQUIREMENTS.md)，使用与结构见现有中英文 README。
-- 保留明确启动、多位真实独立审查者、独立 Astra xhigh、授权内修复、非修复者亲自验收及两轮修复—复验上限。默认执行与常规审查改为 6.1 Sol high，可直接 xhigh/max。
-- 共用原始事实、精简任务交接、按适用版本复用证据；需要独立验收时必须亲自执行关键检查。加入运行快照与随包清单，拒绝冻结部分安装。
-- 实际验证、独立审查发现及其关闭情况、环境失败和未验证范围集中见 [本次验证](tests/update-2026-09-30/VALIDATION.md)。没有性能节省比例或模型等价结论。
-- 安装中六份旧验证文件含本机证据，与维护源历史版本不同；此次全部保留。路径与哈希见最终安装核对，不可用整目录覆盖或删除式同步抹去。
-- 没有本轮待修复问题。已按追加授权推送实现与更新说明，并发布 [v0.3.0](https://github.com/chips-lxm/deep-project-review/releases/tag/v0.3.0)；GitHub 最新版本、说明、安装 ZIP 与 SHA-256 附件均已回读核对。发布标签固定于 `031205c1977d087ef0de9259d4df087553386e3a`，本条发布回执作为 main 的后续文档更新保存；旧版本与历史验证保留。
+- 维护源为 `/Users/lxm/app1/github-preview/deep-project-review`，独立仓库和 `main` 分支。安装副本位于 `~/.codex/skills/deep-project-review`。需求依据见 [REQUIREMENTS.md](REQUIREMENTS.md)，使用入口见 [README.zh-CN.md](README.zh-CN.md)。
+- 初审、修复和独立验收使用 GPT-6.2 Sol，固定复核和必要定向复核使用 GPT-6.2 Astra `xhigh`。继续要求明确启动、授权内修复、非修复者亲自验收和最多两轮修复—复验。结构检查的记录方式见 [证据检查](references/templates.md#结构化证据检查)。
+- 本次更新说明见 [发布介绍](docs/launch-copy.md)，分发版本为 [GitHub v0.4.0](https://github.com/chips-lxm/deep-project-review/releases/tag/v0.4.0)。上版验证证据仍保留在 [2026-09-30 验证](tests/update-2026-09-30/VALIDATION.md)。安装中六份带本机证据的老测试文件保留原字节。
 
-发布证据见 [GitHub 发布回执](tests/update-2026-09-30/github-publication.json)。首轮安装验证对应 `ffea3b81bc4db563b9b4b8de02d9a6344378bbc4`；此后仅更新发布说明、授权、交接和发布回执，运行文件及清单保持原验证版本。Git 推送使用现有 gh 登录的命令级凭据助手，不需要更改全局 Git 配置。
+## 本轮验证
 
-## 版本与恢复
+- 官方格式、配置与 50 个本地引用检查通过，快照测试 10/10、证据检查测试 13/13 通过。源包完成快照与回读，运行摘要为 `0f9de5b3e25347b057fe01df05fa5b6b41e37564de907997abf50a6d0f0ca8f5`。
+- 在固定的合成发票基准上，两位独立 Sol 审查者先分别执行测试。旧 Astra 和 6.2 Astra 分别使用同一版原始要求、源文件和完整报告，以 `xhigh` 独立复核，归并到相同的四项缺陷，并分别区分币种分组与错误去重的影响。保存的基准源码哈希和两次复核的实际观察一致。
+- Codex 本地 `turn_context` 确认两代 Astra 的模型与 `xhigh` 配置实际生效。Sol 修复四项缺陷后，未参与修复的审查者亲自执行原有 5 项测试和 17 项定向回归，全部通过。复验前后样例版本一致。证据检查器以该案例的实际记录通过 `review`、`repair` 和 `accept`。
+- 这是一个隔离案例的同基准对照。未测真实项目的普遍覆盖率、端到端性能或不同客户端的表现。
 
-修改前工作区干净。本地标签 `before-6-1-sol-2026-09-30` 指向 `1fca028fd932d7278a6946604e273f81ae940e21`，保存修改前所有已跟踪内容。本轮本地交付提交的消息为 `Update skills for 6.1 Sol routing and verified run snapshots`；用 `git log -1 --format=fuller -- HANDOFF.md` 定位收录本交接的提交，用 `git status --short` 确认接手时新增改动。最终提交结果以 Git 实际状态为准。
+## 检查点与接续
 
-恢复前先保全当前改动与安装自定义内容。可把上述旧标签 `git archive` 到新的临时目录进行比较，或在保全当前状态后反向撤销本轮提交；不要直接 reset/clean 或对安装目录做删除式覆盖。只还原本轮触及的文件，确认本轮新增文件后再处理它们，并保留安装中的本机历史证据。恢复计划未经整轮真实恢复演练；标签已实际创建并核对，但本地 Git 不是设备损坏后的异地保障。
-
-## 下一步维护
-
-本次交付无需继续修复。后续需求从本文件及实际 Git 状态接手；长任务读取本轮固定快照。规则有意修改后显式执行 `python3 -B scripts/freeze_run.py --seal`，再按 [AGENTS.md](AGENTS.md) 验证、核对安装漂移并同步。普通运行不得重封清单来绕过完整性失败。不要把讨论或维护深度复审 Skill 当作启动项目复审。
+- 修改前仓库干净，恢复标签 `before-6-2-routing-2026-11-23` 指向 `b0e428bea03fc9a2d84043da15a925618787d508`。恢复前先保全当前和安装自定义内容，用指定标签导出到临时目录，比对并恢复相关文件。本地恢复标签已核实，未执行整套回滚演练。
+- 后续改动先读取 [AGENTS.md](AGENTS.md)。有意改动运行文件后显式执行 `python3 -B scripts/freeze_run.py --seal`，再验证安装一致性；运行时继续使用固定快照。讨论、修改或安装本 Skill 本身仍只属于维护任务。

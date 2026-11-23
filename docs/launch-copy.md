@@ -2,27 +2,51 @@
 
 ## GitHub About
 
-Codex project reviews with GPT-6.1 Sol high/xhigh/max, Luna high, mandatory Astra xhigh adjudication, scoped repairs, and independent verification.
+Independent Codex project reviews with GPT-6.2 Sol, GPT-6.2 Astra xhigh adjudication, scoped repairs, and verifiable acceptance evidence.
 
 ## 中文分享文案
 
 给已完成的项目，一次有证据的独立复审。
 
-Deep Project Review「项目深度复审」是一个 Codex Skill：用户明确启动后，通常由 2—4 个真实子智能体独立检查，单独的 gpt-6-astra · xhigh 核对证据、处理冲突与误报。保持用户选定模型的主会话统筹授权内修复和独立验收。gpt-6.1-sol 默认承担分析、实现与常规审查，high 起步，按难点可直接 xhigh/max；旧 gpt-6-sol 保留已验证适用路径；gpt-6-luna 只处理边界明确、低风险且可核对的任务，始终使用 high。模型路由合并不合并独立审查与修复职责。
+Deep Project Review「项目深度复审」是一个 Codex Skill。用户明确启动后，多位真实子智能体独立审查，再由单独的 GPT-6.2 Astra `xhigh` 核对完整报告、原始需求和关键证据。初审、修复与独立验收统一使用 GPT-6.2 Sol，按任务选择推理强度。主会话保留用户选定的模型，统筹授权范围和实际交付。
 
-支持代码、文档、表格、设计和演示材料。用户明确启动，默认最多两轮修复—复验，保留未提交改动，明确区分通过、失败、未运行和无法验证。
+支持代码、文档、表格、设计和演示材料。最多两轮修复—复验。证据检查器核对基准、覆盖、修复授权与验收职责，记录通过、失败、未运行和无法验证的状态。
 
-早期 v0.1.0 的测试结果属于历史记录。当前模型迁移的检查与限制见 [本次验证报告](../tests/update-2026-09-30/VALIDATION.md)；不承诺普遍的质量、耗时或 Token 用量收益。
+本次迁移的验证范围见 [当前交接](../HANDOFF.md)。
 
 ## English share copy
 
 Give finished work an independent review backed by evidence.
 
-Deep Project Review is a Codex skill with explicit invocation, usually 2–4 focused independent reviewers, mandatory separate gpt-6-astra xhigh adjudication, authorized repairs, and independent acceptance checks. The lead remains on the user's selected model. gpt-6.1-sol handles default analysis, implementation and ordinary review starting at high, with direct xhigh/max selection for justified difficulty; gpt-6-sol remains available for verified task paths; gpt-6-luna handles only bounded, low-risk, verifiable work at high. Consolidated model routes keep reviewer and fixer roles independent.
+Deep Project Review is a Codex skill for explicitly invoked independent reviews, with separate GPT-6.2 Astra `xhigh` adjudication. GPT-6.2 Sol handles initial reviews, repairs, and independent acceptance at the reasoning effort each task needs. The lead keeps the user's selected model.
 
-Explicit invocation. Scoped changes. Two repair–verification rounds by default. Clear reporting of what passed, failed, or could not be verified.
+The evidence checker checks revisions, coverage, repair authorization, and reviewer independence. The workflow allows up to two repair–verification rounds and reports whether each check passed, failed, was skipped, or could not be verified.
 
-Earlier v0.1.0 results are historical. The [current validation report](../tests/update-2026-09-30/VALIDATION.md) records current checks and limits. No universal quality, latency, or token savings are claimed.
+The [current handoff](../HANDOFF.md) records the validation scope for this release.
+
+## v0.4.0 更新说明 / Release notes (2026-11-23)
+
+### 中文
+
+- **统一常规任务路由。** GPT-6.2 Sol 负责初审、授权内修复和独立验收。`high` 是默认档位，`medium` 适合边界明确且易核对的任务，`xhigh` 用于复杂根因和跨模块影响，`max` 留给决定交付的疑难判断。
+- **更新独立裁决。** GPT-6.2 Astra `xhigh` 负责正式裁决和必要的定向复核，依据原始需求、完整报告和关键验证证据。每轮保留请求配置和可信宿主证据。
+- **增加证据检查器。** 检查需求与版本的对应关系、关键验收覆盖、修复授权、轮数和验收者身份。保留显式调用、至少两位独立初审者，以及最多两轮修复—复验。验收者亲自执行关键检查。
+- **安装。** 下载 `deep-project-review.zip` 和 `SHA256SUMS.txt`，核对校验和后升级完整目录。保留自定义文件，让已有复审继续使用各自的规则快照。
+
+### English
+
+- **Unified routine routing.** Initial reviews, scoped repairs, and independent acceptance use GPT-6.2 Sol. The default is `high`. Use `medium` for bounded checks, `xhigh` for complex dependencies or root causes, and `max` for hard decisions that determine delivery.
+- **Updated independent adjudication.** GPT-6.2 Astra `xhigh` reviews the original requirements, complete reviewer reports, and key evidence. It also performs required focused rechecks. Record requested settings and trusted runtime evidence.
+- **Evidence checker.** Verify the links among requirements, revisions, coverage, repair authorization, round counts, and acceptance agents. Explicit invocation, at least two independent first-pass reviewers, and the two-round limit are retained.
+- **Installation.** Verify `deep-project-review.zip` against `SHA256SUMS.txt` and upgrade the complete skill directory. Preserve local customizations and allow existing reviews to finish with their pinned rules.
+
+### 验证 / Verification
+
+23 项快照与证据检查测试通过。同一合成案例中，两代 Astra 都确认四项缺陷。新版完成一次修复后，独立验收通过原有 5 项测试及 17 项定向回归，并通过证据检查器的三个阶段。
+
+All 23 snapshot and evidence-check tests passed. Both Astra generations confirmed the same four defects on one synthetic case. After one repair round, independent acceptance passed all five provided tests and 17 targeted regression checks, and the record cleared all three workflow gates.
+
+[使用与配置 / Usage and configuration](../README.md) · [验证详情 / Validation details](../HANDOFF.md) · [全部变更 / Full changes](https://github.com/chips-lxm/deep-project-review/compare/v0.3.0...v0.4.0)
 
 ## v0.3.0 更新说明（2026-09-30）
 
